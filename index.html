@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <!-- Tab icon -->
-    <link rel="icon" href="https://fav.farm/🖩" /> <!-- <i class="fa-duotone fa-calculator"></i> -->
+    <link rel="icon" href="https://fav.farm/🧮" /> <!-- <i class="fa-duotone fa-calculator"></i> -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Github icon src -->
@@ -25,25 +25,36 @@
         <div class="calculator">
             <div class="screen">
                 <!-- Screen -->
-                Screen:
             </div>
-            <div class="operators">
-                <button id="+">+</button>
-                <button id="-">-</button>
-                <button id="x">x</button>
-                <button id="÷">÷</button>
-            </div>
-            <div class="numpad">
-                <button id="1">1</button>
-                <button id="2">2</button>
-                <button id="3">3</button>
-                <button id="4">4</button>
-                <button id="5">5</button>
-                <button id="6">6</button>
-                <button id="7">7</button>
-                <button id="8">8</button>
-                <button id="9">9</button>
-                <button id="0">0</button>
+            <div class="calcButtons">
+                <div class="calculatorLeft">
+                    <div class="options">
+                        <button id="clear">C</button>
+                        <button id="negative">±</button>
+                    </div>
+                    <div class="numpad">
+                        <button id="1">1</button>
+                        <button id="2">2</button>
+                        <button id="3">3</button>
+                        <button id="4">4</button>
+                        <button id="5">5</button>
+                        <button id="6">6</button>
+                        <button id="7">7</button>
+                        <button id="8">8</button>
+                        <button id="9">9</button>
+                        <button id="zero">0</button>
+                        <button id="decimal">.</button>
+                    </div>
+                </div>
+                <div class="calculatorRight">
+                    <div class="operators">
+                        <button id="addBtn">+</button>
+                        <button id="subtractBtn">-</button>
+                        <button id="multiplyBtn">x</button>
+                        <button id="divideBtn">÷</button>
+                        <button id="sumBtn">=</button>
+                    </div>
+                </div>
             </div>
         </div> 
     </main>
