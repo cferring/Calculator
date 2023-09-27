@@ -9,6 +9,8 @@ let operator = DEFAULT_OPERATOR;
 let screenValue = DEFAULT_SCREEN;
 let readyStatus = false;
 let sum = undefined;
+let operationComplete = false; // Variable to track if operation is complete
+let decimalPlaced = false; // New variable to track decimal point placement
 
 
 
@@ -22,6 +24,8 @@ const sumBtn = document.getElementById('sumBtn')
 const screen = document.getElementById('screen')
 // clear
 const clearBtn = document.getElementById('clear')
+// negative
+const negativeBtn = document.getElementById('negative')
 
 
 // Wait for numpad buttons to be pressed, assign full number to screenValue, display on screen
@@ -35,19 +39,38 @@ function readInputs() {
   });
   // Add a click event listener to each operator button
   operators.forEach(operator => {
-    operator.addEventListener('click', () => handleOperator(operator.id));
+    operator.addEventListener('click', () => {
+      handleOperator(operator.id);
+    // inputA = screenValue; //test
+    });
   });
+  
   // Clear
   clearBtn.addEventListener('click', () => clear());
   // Equals
-  sumBtn.addEventListener('click', () => operate(operator, inputA, inputB));
+  sumBtn.addEventListener('click', () => {
+    operate(operator, inputA, inputB)
+    // TEST
+    operationComplete = true;
+  });
+  // negative
+  negativeBtn.addEventListener('click', () => {
+    screenValue = screenValue * -1;
+    screen.innerHTML = screenValue;
+    // handleDigit(screenValue);
+  });
+
 }
 
 function clear() {
-  screenValue = '0';
+  screenValue = 0;
   screen.innerHTML = screenValue;
   readyStatus = false;
+  operationComplete = false;
   console.log("Clear");
+  operator = '0';
+  inputA = 0;
+  inputB = 0;
 }
 
 // digits pressed, check ready state and if ready, if not, update Input A.
@@ -60,25 +83,39 @@ function clear() {
 
 //Creates InputA and InputB
 function handleDigit(digit) {
+
+  // Do not allow user to add digits to sums
+  if (operationComplete) {
+    screenValue = '';
+    inputB = 0;
+    inputA = 0;
+    operationComplete = false;
+  }
+  
+  // Check if = sign pressed so we know to reset if it has.
   if (!readyStatus) {
     // Add digit to end of screen value, unless its 0, then replace the zero
-    if (screenValue === '0') {
+    if (screenValue === 0) {
       screenValue = digit;
     } else {
       screenValue = screenValue + digit;
     }
-    inputA = screenValue
+    inputA = screenValue;
     screen.innerHTML = screenValue;
 
   } else if (readyStatus) {
-    if (screenValue === '0') {
+    if (screenValue === 0) {
       screenValue = digit;
     } else {
       screenValue = screenValue + digit;
     }
-    inputB = screenValue
+    inputB = screenValue;
     screen.innerHTML = screenValue;
   }
+
+  console.log(`inputA: ${inputA}`);
+  console.log(`inputB: ${inputB}`);
+
 }
 
 // Creates operator variable, changes ready status
@@ -86,15 +123,27 @@ function handleOperator(newOperator) {
   if (newOperator == 'sumBtn') {
     return
   }
+
+  // if A and B both have values, operate
+  // This is so pressing an operator with 2 digits already in will spit out sum for you
+  if (inputA && inputB) {
+    operate(operator, inputA, inputB);
+  }
+
   readyStatus = true;
+  inputA = screenValue;
   screenValue = '';
   operator = newOperator;
 }
 
 // creates a sum from all 3 parts using operator functions
 function operate(operator, inputA, inputB) {
-  inputA = parseInt(inputA);
-  inputB = parseInt(inputB);
+  inputA = parseFloat(inputA);
+  inputB = parseFloat(inputB);
+
+  // console.log(`inputA: ${inputA}`);
+  // console.log(`inputB: ${inputB}`);
+
   // Add
   if (operator == 'addBtn') {
     sum = add(inputA, inputB);
@@ -104,20 +153,17 @@ function operate(operator, inputA, inputB) {
     sum = multiply(inputA, inputB);
   } else if (operator == 'divideBtn') {
     sum = divide(inputA, inputB);
+  } else {
+    sum = inputA;
   }
 
-  // Handle Sum
-  // inputA = sum;
-  screenValue = sum;
+  // Handle Sum, make it the new inputA, limit what screen will show
+  inputA = sum;
+  screenValue = +(Math.round(sum + "e" + 10) + "e-" + 10);
   screen.innerHTML = screenValue;
-  inputA = screenValue;
-  console.log(`inputA: ${inputA}`);
-  console.log(`Sum: ${sum}`);
-
 }
 
 function add(a, b) {
-	// return (parseInt(a) + parseInt(b));
   return (a + b);
 };
 
@@ -138,32 +184,9 @@ function power(a, b) {
   return Math.pow(a, b);
 };
 
+function roundToX(num, decimals) {
+  return +(Math.round(num + "e" + decimals) + "e-" + decimal);
+}
+
+
 readInputs();
-
-// Do not edit below this line
-// module.exports = {
-//   add,
-//   subtract,
-//   sum,
-//   multiply,
-//   power,
-//   factorial
-// };
-
-
-
-
-// // Function for if + pressed, do handleOperatorPress(plus)
-// addBtn.onclick = () => handleOperatorPress('add')
-// subtractBtn.onclick = () => handleOperatorPress('subtract')
-// multiplyBtn.onclick = () => handleOperatorPress('multiply')
-// divideBtn.onclick = () => handleOperatorPress('divide')
-// sumBtn.onclick = () => handleOperatorPress('sum', inputA, inputB)
-
-// // function to handle num button presses, using current screen value
-// function handleOperatorPress(operator, inputA, inputB) {
-//   // If any OPERATOR button pressed, save current screenValue as variable A. When next num is pressed, wipe screen and display new number. 
-//   // When = is pressed, save screenValue as variable B, use add function with value A and B, replace screenvalue
-
-//   // Function to send screenValue to the screen
-// }
