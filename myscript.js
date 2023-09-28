@@ -134,6 +134,8 @@ function handleOperator(newOperator) {
   inputA = screenValue;
   screenValue = '';
   operator = newOperator;
+
+  // Add In-line CSS to make operator button glow when active
 }
 
 // creates a sum from all 3 parts using operator functions
@@ -159,7 +161,8 @@ function operate(operator, inputA, inputB) {
 
   // Handle Sum, make it the new inputA, limit what screen will show
   inputA = sum;
-  screenValue = +(Math.round(sum + "e" + 10) + "e-" + 10);
+  //Round size
+  screenValue = +(Math.round(sum + "e" + 6) + "e-" + 6);
   screen.innerHTML = screenValue;
 }
 
